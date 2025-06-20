@@ -77,3 +77,72 @@ JOIN orders o
 ON o.account_id = a.id;
 */
 
+SELECT region.name region, sales_reps.name sales_rep, accounts.name account
+FROM sales_reps
+JOIN accounts
+ON accounts.sales_rep_id = sales_reps.id
+JOIN region
+ON region.id = sales_reps.region_id
+WHERE region.name = 'Midwest'
+ORDER BY account
+LIMIT 5;
+
+SELECT region.name region, sales_reps.name sales_rep, accounts.name account
+FROM sales_reps
+JOIN accounts
+ON accounts.sales_rep_id = sales_reps.id
+JOIN region
+ON region.id = sales_reps.region_id
+WHERE sales_reps.name LIKE 'S%' AND region.name = 'Midwest'
+ORDER BY account
+LIMIT 5;
+
+SELECT region.name region, sales_reps.name sales_rep, accounts.name account
+FROM sales_reps
+JOIN accounts
+ON accounts.sales_rep_id = sales_reps.id
+JOIN region
+ON region.id = sales_reps.region_id
+WHERE sales_reps.name LIKE '% K%' AND region.name = 'Midwest'
+ORDER BY account
+LIMIT 5;
+
+SELECT region.name region, accounts.name account, orders.total_amt_usd/(orders.total+0.01) unit_price
+FROM orders
+JOIN accounts
+ON accounts.id = orders.account_id
+JOIN sales_reps
+ON sales_reps.id = accounts.sales_rep_id
+JOIN region
+ON region.id = sales_reps.region_id
+WHERE orders.standard_qty > 100
+ORDER BY unit_price ASC
+LIMIT 5;
+
+SELECT region.name region, accounts.name account, orders.total_amt_usd/(orders.total+0.01) unit_price
+FROM orders
+JOIN accounts
+ON accounts.id = orders.account_id
+JOIN sales_reps
+ON sales_reps.id = accounts.sales_rep_id
+JOIN region
+ON region.id = sales_reps.region_id
+WHERE orders.standard_qty > 100 AND orders.poster_qty > 50
+ORDER BY unit_price ASC
+LIMIT 5;
+
+SELECT accounts.name account, web_events.channel channel
+FROM accounts
+JOIN web_events
+ON web_events.account_id = accounts.id
+WHERE accounts.id = 1001
+ORDER BY channel
+LIMIT 5;
+
+SELECT orders.occurred_at, accounts.name, orders.total, orders.total_amt_usd
+FROM orders
+JOIN accounts
+ON accounts.id = orders.account_id
+WHERE orders.occurred_at BETWEEN '2015-01-01' AND '2016-01-01'
+ORDER BY orders.occurred_at DESC
+LIMIT 10;
